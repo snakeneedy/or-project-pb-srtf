@@ -18,3 +18,9 @@ var data = 'id,arrival_time,remain_time,priority,expired_time\n'
 + '17,53,14,2,-1\n'
 + '18,2,9,1,-1';
 
+// hsl(  0, 100%, 50%) // Red
+// hsl( 60, 100%, 50%) // Yellow
+// hsl(120, 100%, 50%) // Green
+// hsl(180, 100%, 50%) // Cyan
+// hsl(240, 100%, 50%) // Blue
+
