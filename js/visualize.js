@@ -22,11 +22,6 @@ function visualize(target, ref, data) {
    * data:
    * { 'id', 'start_time', 'end_time' }
    */
-  //console.log(JSON.stringify(data));
-  var unitWidth = 5,
-    unitHeight = 20;
-  var x, y, width, height;
-
   var d = data.sort(function(nxt, pre) {
     if(pre['id'] == nxt['id']) {
       return pre['start_time'] <= nxt['start_time'];
@@ -34,29 +29,41 @@ function visualize(target, ref, data) {
     return pre['id'] < nxt['id'];
   });
 
-  width = 0;
-  for(var i = 0; i < ref.length; i++) {
-    if(ref[i]['expired_time'] > width)
-      width = ref[i]['expired_time'];
+  var dataPoints = [];
+  for(var i = 0; i < d.length; i++) {
+    dataPoints.push({
+      x: d[i]['id'],
+      y: [d[i]['start_time'], d[i]['end_time']],
+      color: fillcolors[d[i]['priority']]
+    });
   }
-  var svg = d3.select(target).append('svg')
-    .attr('width', width * unitWidth)
-    .attr('height', ref.length * unitHeight);
-
-  for(var i = 0; i < data.length; i++) {
-    x = data[i]['start_time'] * unitWidth;
-    y = (data[i]['id'] - 1) * unitHeight;
-    width = (data[i]['end_time'] - data[i]['start_time']) * unitWidth;
-    height = unitHeight;
-    //console.log('('+ x +','+ y +') ('+ width + ','+ height +')');
-    svg.append('rect')
-      .attr('x', x)
-      .attr('y', y)
-      .attr('width', width)
-      .attr('height', height)
-      .style('fill', fillcolors[+ref[(+data[i]['id'] - 1)]['priority']])
-      .style('stroke', '#000')
-      .style('stroke-width', 1);
-  }
+  dataPoints = dataPoints.sort(function(nxt, pre) {
+    if(pre['x'] == nxt['x']) {
+      return pre['start_time'] < nxt['start_time'];
+    }
+    return pre['x'] < nxt['x'];
+  });
+  var chart = new CanvasJS.Chart(target, {
+    title: {
+      text: "Process Schedule"
+    },
+    axisY: {
+      title: 'Time',
+      includeZero: false,
+      interval: 10,
+      valueFormatString: "#0.##"
+    },
+    axisX: {
+      title: 'Process ID',
+      valueFormatString: "#0.##",
+      interval: 1
+    },
+    data: [{
+      type: "rangeBar",
+      yValueFormatString: "#0.##",
+      dataPoints: dataPoints
+    }]
+  });
+  chart.render();
 }
 

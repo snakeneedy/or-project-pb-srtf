@@ -42,6 +42,7 @@ function getExecQueue(jsons) {
         period['start_time'] = pre_time;
         pre_time += queue[0]['remain_time']; // update
         period['end_time']   = pre_time;
+        period['priority']   = queue[0]['priority'];
         queue.shift(); // pop()
         jsons[(+period['id'] - 1)]['expired_time'] = period['end_time'];
         result.push(period);
@@ -53,6 +54,7 @@ function getExecQueue(jsons) {
         period['start_time'] = pre_time;
         period['end_time']   = cur_time;
         queue[0]['remain_time'] -= cur_time - pre_time;
+        period['priority']   = queue[0]['priority'];
         jsons[(+period['id'] - 1)]['expired_time'] = period['end_time'];
         result.push(period);
         pre_time = cur_time; // update
@@ -75,6 +77,7 @@ function getExecQueue(jsons) {
     period['start_time'] = pre_time;
     pre_time += queue[0]['remain_time']; // update
     period['end_time']   = pre_time;
+    period['priority']   = queue[0]['priority'];
     queue.shift(); // pop()
     jsons[(+period['id'] - 1)]['expired_time'] = period['end_time'];
     result.push(period);
@@ -86,7 +89,50 @@ function getExecQueue(jsons) {
   return result;
 }
 
-var result = getExecQueue(jsons);
+function fillWaitingInternals(queue) {
+  /*
+   * queue: [{
+   *   'id': integer,
+   *   'start_time': integer,
+   *   'end_time': integer
+   * }]
+   */
+  // clone JSON and sort 'id'
+  var q = [];
+  for(var i = 0; i < queue.length; i++) {
+    q.push(queue[i]);
+  }
+  q = q.sort(function(nxt, pre) {
+    if(pre['id'] == nxt['id']) {
+      return pre['start_time'] <= nxt['start_time'];
+    }
+    return pre['id'] < nxt['id'];
+  });
 
-visualize('#chart', jsons, result);
+  var maxi = q.length;
+  for(var i = 0, period = -1; i < maxi; i++) {
+    if(period == -1) {
+      period = q[i];
+    }
+    else if(period['id'] == q[i]['id']) {
+      if(period['end_time'] < q[i]['start_time']) {
+        q.push({
+          'id':         q[i]['id'],
+          'start_time': period['end_time'],
+          'end_time':   q[i]['start_time'],
+          'priority':    0
+        });
+      }
+    }
+    else {
+      period = -1;
+    }
+  }
+  return q;
+}
+
+var result = getExecQueue(jsons);
+result = fillWaitingInternals(result);
+
+visualize('chart', jsons, result);
 
