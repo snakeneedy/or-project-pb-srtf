@@ -15,12 +15,15 @@
 // hsl(240, 100%, 50%) // Blue
 var fillcolors = ['gray', 'red', 'yellow', 'green', 'cyan', 'blue'];
 
-function visualize(target, ref, data) {
+function visualize(target, ref, data, textJson) {
   /* all below are integers
    * ref: index + 1 = id
    * { 'id', 'arrival_time', 'priority', 'expired_time' }
    * data:
    * { 'id', 'start_time', 'end_time' }
+   * textJson: {
+   *   'title': string
+   * }
    */
   var d = data.sort(function(nxt, pre) {
     if(pre['id'] == nxt['id']) {
@@ -45,7 +48,7 @@ function visualize(target, ref, data) {
   });
   var chart = new CanvasJS.Chart(target, {
     title: {
-      text: "Process Schedule"
+      text: textJson['title']
     },
     axisY: {
       title: 'Time',
@@ -79,7 +82,7 @@ function showDataTable(domId, data) {
     tr.innerHTML += '<td>'+ data[i]['priority'] + '</td>';
     tr.innerHTML += '<td>'+ data[i]['arrival_time'] + '</td>';
     tr.innerHTML += '<td>'+ data[i]['remain_time'] + '</td>';
-    tr.innerHTML += '<td>'+ data[i]['expired_time'] + '</td>';
+    //tr.innerHTML += '<td>'+ data[i]['expired_time'] + '</td>';
     table.appendChild(tr);
   }
 }

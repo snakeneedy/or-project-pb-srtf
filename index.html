@@ -11,6 +11,9 @@ td {
   border: 1px solid #000;
   border-collapse: collapse;
 }
+.chart {
+  height: 400px;
+}
   </style>
 </head>
 
@@ -25,11 +28,12 @@ td {
       <td>Priority</td>
       <td>Arrival Time</td>
       <td>Execution Time</td>
-      <td>Expired Time</td>
+      <!-- <td>Expired Time</td> -->
     </th>
   </table>
 </div>
-<div id="chart"></div>
+<div id="chart-srtf" class="chart"></div>
+<div id="chart-sjf" class="chart"></div>
 <div id="debug"></div>
 
 <!-- Load d3.js and c3.js -->
