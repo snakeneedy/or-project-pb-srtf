@@ -90,9 +90,9 @@ function getExecQueue(jsons) {
 }
 
 // 還有 bug
-function fillWaitingInternals(queue) {
+function fillWaitingInternals(schedule, ref) {
   /*
-   * queue: [{
+   * schedule: [{
    *   'id': integer,
    *   'start_time': integer,
    *   'end_time': integer
@@ -100,8 +100,8 @@ function fillWaitingInternals(queue) {
    */
   // clone JSON and sort 'id'
   var q = [];
-  for(var i = 0; i < queue.length; i++) {
-    q.push(queue[i]);
+  for(var i = 0; i < schedule.length; i++) {
+    q.push(schedule[i]);
   }
   q = q.sort(function(nxt, pre) {
     if(pre['id'] == nxt['id']) {
@@ -112,8 +112,16 @@ function fillWaitingInternals(queue) {
 
   var maxi = q.length;
   for(var i = 0, period = -1; i < maxi; i++) {
-    if(period == -1) {
-      period = q[i];
+    if(period == -1 || period['id'] != q[i]['id']) {
+      // 正要處理這個 'id' 的 process
+      if(ref[q[i]['id'] - 1]['arrival_time'] < q[i]['start_time']) {
+        q.push({
+          'id':         q[i]['id'],
+          'start_time': ref[q[i]['id'] - 1]['arrival_time'],
+          'end_time':   q[i]['start_time'],
+          'priority':   0
+        });
+      }
     }
     else if(period['id'] == q[i]['id']) {
       if(period['end_time'] < q[i]['start_time']) {
@@ -124,11 +132,8 @@ function fillWaitingInternals(queue) {
           'priority':   0
         });
       }
-      period = q[i];
     }
-    else {
-      period = -1;
-    }
+    period = q[i];
   }
   return q;
 }
@@ -146,7 +151,7 @@ function countWaitingTime(processes) {
 }
 
 var result = getExecQueue(jsons);
-result = fillWaitingInternals(result); // 還有 bug
+result = fillWaitingInternals(result, jsons); // 還有 bug
 console.log(countWaitingTime(jsons)); // not sure
 
 visualize('chart', jsons, result);
