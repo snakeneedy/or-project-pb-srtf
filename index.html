@@ -23,6 +23,21 @@ td {
   <li>Shortest Remaining Time First (SRTF)</li>
 </ol>
 <div>
+  <table>
+    <th>
+      <td>Number of Data</td>
+      <td>Arrival Time</td>
+      <td>Execution Time</td>
+    </th>
+    <tr>
+      <td><button onclick="clickGenerate();">Generate</button></td>
+      <td><input id="var-seed-number" placeholder="default: 10"/></td>
+      <td><input id="var-seed-arrival" placeholder="default: 25"/></td>
+      <td><input id="var-seed-execution" placeholder="default: 50"/></td>
+    </tr>
+  </table>
+</div>
+<div>
   <table id="data-table">
     <th>
       <td>Priority</td>

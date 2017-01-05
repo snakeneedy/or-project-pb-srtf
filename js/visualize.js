@@ -75,14 +75,20 @@ function showDataTable(domId, data) {
    * order:
    * id,priority,arrival_time,remain_time,expired_time'
    */
+  var d = data.sort(function(nxt, pre) {
+    return pre['id'] < nxt['id'];
+  });
   var table = document.getElementById(domId);
-  for(var i = data.length - 1; i >= 0; i--) {
+  table.innerHTML = ('<th><td>Priority</td>'
+    + '<td>Arrival Time</td>'
+    + '<td>Execution Time</td></th>');
+  for(var i = d.length - 1; i >= 0; i--) {
     var tr = document.createElement('tr');
-    tr.innerHTML += '<td>'+ data[i]['id'] + '</td>';
-    tr.innerHTML += '<td>'+ data[i]['priority'] + '</td>';
-    tr.innerHTML += '<td>'+ data[i]['arrival_time'] + '</td>';
-    tr.innerHTML += '<td>'+ data[i]['remain_time'] + '</td>';
-    //tr.innerHTML += '<td>'+ data[i]['expired_time'] + '</td>';
+    tr.innerHTML += '<td>'+ d[i]['id'] + '</td>';
+    tr.innerHTML += '<td>'+ d[i]['priority'] + '</td>';
+    tr.innerHTML += '<td>'+ d[i]['arrival_time'] + '</td>';
+    tr.innerHTML += '<td>'+ d[i]['remain_time'] + '</td>';
+    //tr.innerHTML += '<td>'+ d[i]['expired_time'] + '</td>';
     table.appendChild(tr);
   }
 }

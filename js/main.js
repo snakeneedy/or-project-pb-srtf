@@ -1,5 +1,7 @@
 'use strict';
-var jsons = csv2jsons(data);
+var jsons,
+    result,
+    waitingTime;
 
 function getSchedultBySRTF(jsons) {
   /*
@@ -278,24 +280,46 @@ function getSchedultBySJF(jsons) {
   return result;
 } // getSchedultBySJF
 
-showDataTable('data-table', jsons);
+function clickGenerate() {
+//var data = autoData({
+//  number:       10,
+//  arrival_time: 25,
+//  remain_time:  50
+//});
+  var number =       document.getElementById('var-seed-number').value;
+  if(number.length == 0 || +number == null)
+    number = 10; // default
+  var arrival_time = document.getElementById('var-seed-arrival').value;
+  if(arrival_time.length == 0 || +arrival_time == null)
+    arrival_time = 25; // default
+  var remain_time =  document.getElementById('var-seed-execution').value;
+  if(remain_time.length == 0 || +remain_time == null)
+    remain_time = 50; // default
+  var seed = {
+    number:       +number,
+    arrival_time: +arrival_time,
+    remain_time:  +remain_time
+  };
+  //console.log(JSON.stringify(seed));
+  var data = autoData(seed);
+  jsons = csv2jsons(data);
+  showDataTable('data-table', jsons);
 
-var result,
-    waitingTime;
+  result = fillWaitingInternals(getSchedultBySRTF(jsons), jsons);
+  //result = getSchedultBySRTF(jsons);
+  waitingTime = countWaitingTime(jsons);
+  console.log('SRTF: '+ waitingTime);
+  visualize('chart-srtf', jsons, result, {
+    title: 'SRTF: '+ waitingTime + ' unit time'
+  });
 
-result = fillWaitingInternals(getSchedultBySRTF(jsons), jsons);
-//result = getSchedultBySRTF(jsons);
-waitingTime = countWaitingTime(jsons);
-console.log('SRTF: '+ waitingTime);
-visualize('chart-srtf', jsons, result, {
-  title: 'SRTF: '+ waitingTime + ' unit time'
-});
+  result = fillWaitingInternals(getSchedultBySJF(jsons), jsons);
+  //result = getSchedultBySJF(jsons);
+  waitingTime = countWaitingTime(jsons);
+  console.log('SJF: '+ waitingTime);
+  visualize('chart-sjf', jsons, result, {
+    title: 'SJF: '+ waitingTime + ' unit time'
+  });
+}
 
-result = fillWaitingInternals(getSchedultBySJF(jsons), jsons);
-//result = getSchedultBySJF(jsons);
-waitingTime = countWaitingTime(jsons);
-console.log('SJF: '+ waitingTime);
-visualize('chart-sjf', jsons, result, {
-  title: 'SJF: '+ waitingTime + ' unit time'
-});
-
+window.onload = clickGenerate();
