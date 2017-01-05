@@ -122,12 +122,6 @@ function fillWaitingInternals(schedule, ref) {
           'end_time':   q[i]['start_time'],
           'priority':   0
         });
-        //console.log(JSON.stringify({
-        //  'id':         q[i]['id'],
-        //  'start_time': ref[q[i]['id'] - 1]['arrival_time'],
-        //  'end_time':   q[i]['start_time'],
-        //  'priority':   0
-        //}));
       }
       period = q[i];
     }
@@ -139,12 +133,6 @@ function fillWaitingInternals(schedule, ref) {
           'end_time':   q[i]['start_time'],
           'priority':   0
         });
-        //console.log(JSON.stringify({
-        //  'id':         q[i]['id'],
-        //  'start_time': period['end_time'],
-        //  'end_time':   q[i]['start_time'],
-        //  'priority':   0
-        //}));
         period = q[i];
       }
       else if(period['end_time'] == q[i]['start_time']) {
@@ -183,9 +171,7 @@ function countWaitingTime(processes) {
   // sum ['priority']=0
   var waitingTime = 0, plus;
   for(var i = 0; i < processes.length; i++) {
-    //console.log('i: '+ i +', '+ JSON.stringify(processes[i]));
     plus = processes[i]['expired_time'] - processes[i]['arrival_time'] - processes[i]['remain_time'];
-    //console.log('plus: '+ plus);
     waitingTime += plus;
   }
   return waitingTime;
@@ -300,23 +286,18 @@ function clickGenerate() {
     arrival_time: +arrival_time,
     remain_time:  +remain_time
   };
-  //console.log(JSON.stringify(seed));
   var data = autoData(seed);
   jsons = csv2jsons(data);
   showDataTable('data-table', jsons);
 
   result = fillWaitingInternals(getSchedultBySRTF(jsons), jsons);
-  //result = getSchedultBySRTF(jsons);
   waitingTime = countWaitingTime(jsons);
-  console.log('SRTF: '+ waitingTime);
   visualize('chart-srtf', jsons, result, {
     title: 'SRTF: '+ waitingTime + ' unit time'
   });
 
   result = fillWaitingInternals(getSchedultBySJF(jsons), jsons);
-  //result = getSchedultBySJF(jsons);
   waitingTime = countWaitingTime(jsons);
-  console.log('SJF: '+ waitingTime);
   visualize('chart-sjf', jsons, result, {
     title: 'SJF: '+ waitingTime + ' unit time'
   });

@@ -8,11 +8,6 @@
  * }
  */
 
-// hsl(  0, 100%, 50%) // Red
-// hsl( 60, 100%, 50%) // Yellow
-// hsl(120, 100%, 50%) // Green
-// hsl(180, 100%, 50%) // Cyan
-// hsl(240, 100%, 50%) // Blue
 var fillcolors = ['gray', 'red', 'yellow', 'green', 'cyan', 'blue'];
 
 function visualize(target, ref, data, textJson) {
@@ -88,7 +83,6 @@ function showDataTable(domId, data) {
     tr.innerHTML += '<td>'+ d[i]['priority'] + '</td>';
     tr.innerHTML += '<td>'+ d[i]['arrival_time'] + '</td>';
     tr.innerHTML += '<td>'+ d[i]['remain_time'] + '</td>';
-    //tr.innerHTML += '<td>'+ d[i]['expired_time'] + '</td>';
     table.appendChild(tr);
   }
 }
