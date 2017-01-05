@@ -13,7 +13,7 @@
 // hsl(120, 100%, 50%) // Green
 // hsl(180, 100%, 50%) // Cyan
 // hsl(240, 100%, 50%) // Blue
-var fillcolors = ['red', 'yellow', 'green', 'cyan', 'blue'];
+var fillcolors = ['gray', 'red', 'yellow', 'green', 'cyan', 'blue'];
 
 function visualize(target, ref, data) {
   /* all below are integers
@@ -54,7 +54,7 @@ function visualize(target, ref, data) {
       .attr('y', y)
       .attr('width', width)
       .attr('height', height)
-      .style('fill', fillcolors[+ref[(+data[i]['id'] - 1)]['priority'] - 1])
+      .style('fill', fillcolors[+ref[(+data[i]['id'] - 1)]['priority']])
       .style('stroke', '#000')
       .style('stroke-width', 1);
   }
