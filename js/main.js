@@ -195,4 +195,5 @@ var waitingTime = countWaitingTime(jsons);
 //console.log(waitingTime);
 
 visualize('chart', jsons, result);
+showDataTable('data-table', jsons);
 

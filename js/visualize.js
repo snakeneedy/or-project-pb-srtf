@@ -67,3 +67,20 @@ function visualize(target, ref, data) {
   chart.render();
 }
 
+function showDataTable(domId, data) {
+  /*
+   * order:
+   * id,priority,arrival_time,remain_time,expired_time'
+   */
+  var table = document.getElementById(domId);
+  for(var i = data.length - 1; i >= 0; i--) {
+    var tr = document.createElement('tr');
+    tr.innerHTML += '<td>'+ data[i]['id'] + '</td>';
+    tr.innerHTML += '<td>'+ data[i]['priority'] + '</td>';
+    tr.innerHTML += '<td>'+ data[i]['arrival_time'] + '</td>';
+    tr.innerHTML += '<td>'+ data[i]['remain_time'] + '</td>';
+    tr.innerHTML += '<td>'+ data[i]['expired_time'] + '</td>';
+    table.appendChild(tr);
+  }
+}
+

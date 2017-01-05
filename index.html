@@ -4,7 +4,14 @@
   <title>Process Waiting Time Minimization</title>
   <!-- Load c3.css -->
   <link href="libs/c3-0.4.11/c3.css" rel="stylesheet" type="text/css"/>
-  <style type="text/css"></style>
+  <style type="text/css">
+table,
+tr,
+td {
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+  </style>
 </head>
 
 <h1>Process Waiting Time Minimization</h1>
@@ -12,6 +19,16 @@
   <li>Priority Sheduling</li>
   <li>Shortest Remaining Time First (SRTF)</li>
 </ol>
+<div>
+  <table id="data-table">
+    <th>
+      <td>Priority</td>
+      <td>Arrival Time</td>
+      <td>Execution Time</td>
+      <td>Expired Time</td>
+    </th>
+  </table>
+</div>
 <div id="chart"></div>
 <div id="debug"></div>
 
