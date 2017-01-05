@@ -1,7 +1,7 @@
 'use strict';
 var jsons = csv2jsons(data);
 
-function getExecQueue(jsons) {
+function getSchedultBySRTF(jsons) {
   /*
    * jsons: {
    *   'id': integer,
@@ -189,7 +189,7 @@ function countWaitingTime(processes) {
   return waitingTime;
 }
 
-var result = getExecQueue(jsons);
+var result = getSchedultBySRTF(jsons);
 result = fillWaitingInternals(result, jsons);
 var waitingTime = countWaitingTime(jsons);
 //console.log(waitingTime);
