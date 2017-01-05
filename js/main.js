@@ -122,6 +122,7 @@ function fillWaitingInternals(schedule, ref) {
           'priority':   0
         });
       }
+      period = q[i];
     }
     else if(period['id'] == q[i]['id']) {
       if(period['end_time'] < q[i]['start_time']) {
@@ -131,9 +132,36 @@ function fillWaitingInternals(schedule, ref) {
           'end_time':   q[i]['start_time'],
           'priority':   0
         });
+        period = q[i];
+      }
+      else if(period['end_time'] == q[i]['start_time']) {
+        // 合併碎片
+        period['end_time'] = q[i]['end_time'];
+        q[i]['priority'] = (-1); // q[i] 等待刪除
+        if(i + 1 >= maxi || period['id'] != q[i + 1]['id'] || period['end_time'] != q[i + 1]['start_time']) {
+          q.push({
+            'id':         period['id'],
+            'start_time': period['start_time'],
+            'end_time':   period['end_time'],
+            'priority':   period['priority']
+          });
+          period = -1;
+        }
       }
     }
-    period = q[i];
+  }
+  // 刪除 q[i]['priority'] = (-1);
+  q = q.sort(function(nxt, pre) {
+    if(pre['priority'] != -1 && nxt['priority'] != -1) {
+      if(pre['id'] == nxt['id']) {
+        return pre['start_time'] <= nxt['start_time'];
+      }
+      return pre['id'] < nxt['id'];
+    }
+    return pre['priority'] == -1 && nxt['priority'] != -1;
+  });
+  while(q.length > 0 && q[0]['priority'] == -1) {
+    q.shift();
   }
   return q;
 }
@@ -141,17 +169,18 @@ function fillWaitingInternals(schedule, ref) {
 // not sure
 function countWaitingTime(processes) {
   // sum ['priority']=0
-  console.log(processes);
+  //console.log(processes);
   var waitingTime = 0;
   for(var i = 0; i < processes.length; i++) {
     waitingTime += (processes[i]['expired_time'] - processes[i]['arrival_time'] - processes[i]['remain_time']);
-    console.log(waitingTime);
+    //console.log(waitingTime);
   }
   return waitingTime;
 }
 
 var result = getExecQueue(jsons);
 result = fillWaitingInternals(result, jsons); // 還有 bug
+console.log(result);
 console.log(countWaitingTime(jsons)); // not sure
 
 visualize('chart', jsons, result);
