@@ -6,6 +6,8 @@ function csv2jsons(csv) {
     values;
   keys = csvrows[0].split(',');
   for(var i = 1; i < csvrows.length; i++) {
+    if(csvrows[i].length == 0)
+      continue;
     json = '{';
     values = csvrows[i].split(',');
     for(var j = 0; j < keys.length; j++) {
