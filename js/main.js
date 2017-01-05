@@ -156,7 +156,7 @@ function fillWaitingInternals(schedule, ref) {
             'end_time':   period['end_time'],
             'priority':   period['priority']
           });
-          period = -1;
+          //period = -1;
         }
       }
     }
@@ -284,6 +284,7 @@ var result,
     waitingTime;
 
 result = fillWaitingInternals(getSchedultBySRTF(jsons), jsons);
+//result = getSchedultBySRTF(jsons);
 waitingTime = countWaitingTime(jsons);
 console.log('SRTF: '+ waitingTime);
 visualize('chart-srtf', jsons, result, {
@@ -291,6 +292,7 @@ visualize('chart-srtf', jsons, result, {
 });
 
 result = fillWaitingInternals(getSchedultBySJF(jsons), jsons);
+//result = getSchedultBySJF(jsons);
 waitingTime = countWaitingTime(jsons);
 console.log('SJF: '+ waitingTime);
 visualize('chart-sjf', jsons, result, {
