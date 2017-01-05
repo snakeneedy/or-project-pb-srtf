@@ -1,5 +1,5 @@
 # Operation Research Project
-Priority Based and Shortest Remaining Time First Scheduling
+Priority Based and Shortest Remaining Time First (SRTF) Scheduling
 
 ## TODO
 
@@ -7,8 +7,8 @@ Priority Based and Shortest Remaining Time First Scheduling
 - [x] Load data (CSV) and convert to JSON
 - [x] Execute the algorithm
 - [x] Show the result
-- [ ] Show data table
+- [x] Show data table
 - [ ] Compare to other algorithm (preemptive)
-    - [ ] First Job Serve
-    - [ ] Shortest Job First
+    - [ ] First-Come, First-Served (FCFS) Scheduling
+    - [ ] Shortest-Job-First (SJF) Scheduling
 
