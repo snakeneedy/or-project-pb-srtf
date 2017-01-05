@@ -1,4 +1,6 @@
-var processes = csv2jsons(data);
+'use strict';
+var jsons = csv2jsons(data);
+var processes = JSON.parse(JSON.stringify(jsons));
 var queue = [];
 var result = [];
 
@@ -36,6 +38,7 @@ for(var i = 0; i < processes.length; i++) {
       period['end_time']   = pre_time;
       queue.shift(); // pop()
       console.log('period: '+ JSON.stringify(period));
+      jsons[(+period['id'] - 1)]['expired_time'] = period['end_time'];
       result.push(period);
 //      console.log('      -> pre_time: '+ pre_time +', cur_time: '+ cur_time);
     }
@@ -47,6 +50,7 @@ for(var i = 0; i < processes.length; i++) {
       period['end_time']   = cur_time;
       queue[0]['remain_time'] -= cur_time - pre_time;
       console.log('period: '+ JSON.stringify(period));
+      jsons[(+period['id'] - 1)]['expired_time'] = period['end_time'];
       result.push(period);
       pre_time = cur_time; // update
     }
@@ -69,7 +73,7 @@ while(queue.length > 0) {
   pre_time += queue[0]['remain_time']; // update
   period['end_time']   = pre_time;
   queue.shift(); // pop()
-  console.log('period: '+ JSON.stringify(period));
+  jsons[(+period['id'] - 1)]['expired_time'] = period['end_time'];
   result.push(period);
   //      console.log('      -> pre_time: '+ pre_time +', cur_time: '+ cur_time);
 }
@@ -78,4 +82,13 @@ while(queue.length > 0) {
 //console.log(result);
 for(var i = 0; i < result.length; i++)
   document.getElementById('debug').innerHTML += JSON.stringify(result[i]) +'<br/>';
+
+jsons = jsons.sort(function(nxt, pre) {
+  return pre['id'] < nxt['id'];
+});
+
+document.getElementById('debug').innerHTML += '* jsons *<br/>';
+document.getElementById('debug').innerHTML += 'Total: '+ jsons.length +'<br/>';
+for(var i = 0; i < jsons.length; i++)
+  document.getElementById('debug').innerHTML += JSON.stringify(jsons[i]) +'<br/>';
 
