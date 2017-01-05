@@ -89,6 +89,7 @@ function getExecQueue(jsons) {
   return result;
 }
 
+// 還有 bug
 function fillWaitingInternals(queue) {
   /*
    * queue: [{
@@ -120,9 +121,10 @@ function fillWaitingInternals(queue) {
           'id':         q[i]['id'],
           'start_time': period['end_time'],
           'end_time':   q[i]['start_time'],
-          'priority':    0
+          'priority':   0
         });
       }
+      period = q[i];
     }
     else {
       period = -1;
@@ -131,8 +133,21 @@ function fillWaitingInternals(queue) {
   return q;
 }
 
+// not sure
+function countWaitingTime(processes) {
+  // sum ['priority']=0
+  console.log(processes);
+  var waitingTime = 0;
+  for(var i = 0; i < processes.length; i++) {
+    waitingTime += (processes[i]['expired_time'] - processes[i]['arrival_time'] - processes[i]['remain_time']);
+    console.log(waitingTime);
+  }
+  return waitingTime;
+}
+
 var result = getExecQueue(jsons);
-result = fillWaitingInternals(result);
+result = fillWaitingInternals(result); // 還有 bug
+console.log(countWaitingTime(jsons)); // not sure
 
 visualize('chart', jsons, result);
 
