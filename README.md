@@ -5,6 +5,6 @@ Priority Based and Shortest Remaining Time First Scheduling
 
 - [x] Create some data to experiment
 - [x] Load data (CSV) and convert to JSON
-- [ ] Execute the algorithm
-- [ ] Show the result
+- [x] Execute the algorithm
+- [x] Show the result
 

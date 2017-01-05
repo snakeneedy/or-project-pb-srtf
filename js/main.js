@@ -89,7 +89,6 @@ function getExecQueue(jsons) {
   return result;
 }
 
-// 還有 bug
 function fillWaitingInternals(schedule, ref) {
   /*
    * schedule: [{
@@ -121,6 +120,12 @@ function fillWaitingInternals(schedule, ref) {
           'end_time':   q[i]['start_time'],
           'priority':   0
         });
+        //console.log(JSON.stringify({
+        //  'id':         q[i]['id'],
+        //  'start_time': ref[q[i]['id'] - 1]['arrival_time'],
+        //  'end_time':   q[i]['start_time'],
+        //  'priority':   0
+        //}));
       }
       period = q[i];
     }
@@ -132,6 +137,12 @@ function fillWaitingInternals(schedule, ref) {
           'end_time':   q[i]['start_time'],
           'priority':   0
         });
+        //console.log(JSON.stringify({
+        //  'id':         q[i]['id'],
+        //  'start_time': period['end_time'],
+        //  'end_time':   q[i]['start_time'],
+        //  'priority':   0
+        //}));
         period = q[i];
       }
       else if(period['end_time'] == q[i]['start_time']) {
@@ -166,22 +177,22 @@ function fillWaitingInternals(schedule, ref) {
   return q;
 }
 
-// not sure
 function countWaitingTime(processes) {
   // sum ['priority']=0
-  //console.log(processes);
-  var waitingTime = 0;
+  var waitingTime = 0, plus;
   for(var i = 0; i < processes.length; i++) {
-    waitingTime += (processes[i]['expired_time'] - processes[i]['arrival_time'] - processes[i]['remain_time']);
-    //console.log(waitingTime);
+    //console.log('i: '+ i +', '+ JSON.stringify(processes[i]));
+    plus = processes[i]['expired_time'] - processes[i]['arrival_time'] - processes[i]['remain_time'];
+    //console.log('plus: '+ plus);
+    waitingTime += plus;
   }
   return waitingTime;
 }
 
 var result = getExecQueue(jsons);
-result = fillWaitingInternals(result, jsons); // 還有 bug
-console.log(result);
-console.log(countWaitingTime(jsons)); // not sure
+result = fillWaitingInternals(result, jsons);
+var waitingTime = countWaitingTime(jsons);
+//console.log(waitingTime);
 
 visualize('chart', jsons, result);
 
